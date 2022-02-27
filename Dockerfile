@@ -123,7 +123,7 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt \
  && useradd -g 1000 -l -m -s /bin/false -u 1000 "${USER_NAME}"
 
 RUN npm -g i ijavascript-plotly
-RUN jupyter labextension install jupyterlab-plotly @jupyter-widgets/jupyterlab-manager plotlywidget packages/nteract-data-explorer
+RUN jupyter labextension install jupyterlab-plotly @jupyter-widgets/jupyterlab-manager plotlywidget
 
 USER ${USER_NAME}
 
