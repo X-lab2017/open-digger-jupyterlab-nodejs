@@ -1,0 +1,14 @@
+jupyter
+notebook
+jupyterlab
+jupyterhub
+lxml
+beautifulsoup4
+html5lib
+python-highcharts
+sympy
+cython
+dill
+tornado
+jupyter_core
+jupyter_client
