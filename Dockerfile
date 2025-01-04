@@ -1,6 +1,6 @@
 ARG UBUNTU_CODENAME="focal"
 
-ARG NODE_VERSION="14.x"
+ARG NODE_VERSION="20.x"
 ARG LLVM_VERSION=13
 
 FROM buildpack-deps:${UBUNTU_CODENAME}-curl AS downloader
@@ -31,11 +31,13 @@ USER root
 
 WORKDIR /tmp
 
+ARG TARGETARCH
+
 COPY --from=downloader /tmp/llvm-snapshot.gpg.key /tmp/llvm-snapshot.gpg.key
 COPY --chown=1000:1000 requirements.txt /tmp/requirements.txt
 COPY --from=downloader /tmp/setup_nodejs.sh /tmp/setup_nodejs.sh
 COPY --from=downloader /tmp/get-pip.py /tmp/get-pip.py
-COPY --chown=1000:1000 sources.list /etc/apt/sources.list
+COPY --chown=1000:1000 sources.list.${TARGETARCH} /etc/apt/sources.list
 
 ENV CC="/usr/bin/clang-${LLVM_VERSION}"
 ENV CXX="/usr/bin/clang++-${LLVM_VERSION}"
@@ -94,7 +96,7 @@ ARG DEPENDENCIES="\
   uuid-dev"
 
 RUN cat /tmp/llvm-snapshot.gpg.key | apt-key add - \
- && echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-${LLVM_VERSION} main" >> /etc/apt/sources.list.d/llvm-toolchain.list \
+ && echo "deb https://apt.llvm.org/focal/ llvm-toolchain-focal-${LLVM_VERSION} main" >> /etc/apt/sources.list.d/llvm-toolchain.list \
  && apt-get update -qq \
  && apt-get install --no-install-recommends -qqy ca-certificates gnupg2 binutils apt-utils software-properties-common \
  && add-apt-repository ppa:git-core/ppa -y \
